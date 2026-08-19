@@ -35,6 +35,11 @@ data class MovimentoItemService(
         return repository.findAll().map { itemViewMapper.map(it) }
     }
 
+    fun listarItensPorMovimento(movimentoId: Int): List<MovimentoItemView> {
+        return repository.findByMovimentoId(movimentoId)
+            .map { itemViewMapper.map(it) }
+    }
+
     @Transactional
     @CacheEvict(cacheNames = ["MovimentoItens"], allEntries = true)
     fun cadastrarMovimentoItem(form: NovoItem): MovimentoItemView {

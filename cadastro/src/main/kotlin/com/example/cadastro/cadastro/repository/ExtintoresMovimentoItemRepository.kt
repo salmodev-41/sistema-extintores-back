@@ -4,4 +4,5 @@ import com.example.cadastro.cadastro.model.ExtintoresMovimentoItem
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface ExtintoresMovimentoItemRepository: JpaRepository<ExtintoresMovimentoItem, Int> {
+    fun findByMovimentoId(movimentoId: Int): List<ExtintoresMovimentoItem>
 }

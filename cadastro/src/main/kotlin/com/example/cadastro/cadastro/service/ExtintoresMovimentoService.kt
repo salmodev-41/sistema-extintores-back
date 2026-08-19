@@ -1,11 +1,14 @@
 package com.example.cadastro.cadastro.service
 
+import com.example.cadastro.cadastro.dto.MovimentoItemView
 import com.example.cadastro.cadastro.dto.MovimentoView
 import com.example.cadastro.cadastro.dto.NovoMovimentoForm
 import com.example.cadastro.cadastro.exception.NotFoundException
+import com.example.cadastro.cadastro.mapper.ItemViewMapper
 import jakarta.transaction.Transactional
 import com.example.cadastro.cadastro.mapper.MovimentoFormMapper
 import com.example.cadastro.cadastro.mapper.MovimentoViewMapper
+import com.example.cadastro.cadastro.repository.ExtintoresMovimentoItemRepository
 import org.springframework.cache.annotation.CacheEvict
 import org.springframework.stereotype.Service
 import com.example.cadastro.cadastro.repository.ExtintoresMovimentoRepository
@@ -15,7 +18,9 @@ data class ExtintoresMovimentoService(
     private val repository: ExtintoresMovimentoRepository,
     private val movimentoFormMapper: MovimentoFormMapper,
     private val movimentoViewMapper: MovimentoViewMapper,
-    private val empresasService: EmpresasService
+    private val empresasService: EmpresasService,
+    private val movimentoItemRepository: ExtintoresMovimentoItemRepository,
+    private val itemViewMapper: ItemViewMapper
 ) {
 
     fun buscarMovimento(id: Int): MovimentoView {
@@ -27,6 +32,15 @@ data class ExtintoresMovimentoService(
 
     fun listarMovimentacoes(): List<MovimentoView> {
         return repository.findAll().map { movimentoViewMapper.map(it) }
+    }
+
+    fun listarItensDaMovimentacao(movimentoId: Int): List<MovimentoItemView> {
+        repository.findById(movimentoId)
+            .orElseThrow { NotFoundException("Movimentação não encontrada") }
+
+        return movimentoItemRepository
+            .findByMovimentoId(movimentoId)
+            .map { itemViewMapper.map(it) }
     }
 
     @Transactional

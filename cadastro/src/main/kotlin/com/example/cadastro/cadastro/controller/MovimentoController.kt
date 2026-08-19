@@ -1,5 +1,6 @@
 package com.example.cadastro.cadastro.controller
 
+import com.example.cadastro.cadastro.dto.MovimentoItemView
 import com.example.cadastro.cadastro.dto.MovimentoView
 import com.example.cadastro.cadastro.dto.NovoMovimentoForm
 import jakarta.validation.Valid
@@ -32,6 +33,16 @@ data class MovimentoController(
     fun listarMovimento(): ResponseEntity<List<MovimentoView>> {
         val lista = service.listarMovimentacoes()
         return ResponseEntity.ok(lista)
+    }
+
+    @GetMapping("/{movimentoId}/itens")
+    fun listarItensDaMovimentacao(
+        @PathVariable movimentoId: Int
+    ): ResponseEntity<List<MovimentoItemView>> {
+
+        val itens = service.listarItensDaMovimentacao(movimentoId)
+
+        return ResponseEntity.ok(itens)
     }
 
     @PostMapping

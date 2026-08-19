@@ -29,6 +29,16 @@ data class MovimentoItemController(
         return ResponseEntity.ok(lista)
     }
 
+    @GetMapping("/movimentacao/{movimentoId}")
+    fun listarItensPorMovimento(
+        @PathVariable movimentoId: Int
+    ): ResponseEntity<List<MovimentoItemView>> {
+
+        val lista = service.listarItensPorMovimento(movimentoId)
+
+        return ResponseEntity.ok(lista)
+    }
+
     @GetMapping("/{id}")
     fun buscarMovimentoItem(@PathVariable id: Int): ResponseEntity<MovimentoItemView> {
         val item = service.buscarMovimentoItem(id)
