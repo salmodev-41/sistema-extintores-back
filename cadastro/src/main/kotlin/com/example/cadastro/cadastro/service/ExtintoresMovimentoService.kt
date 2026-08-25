@@ -3,11 +3,13 @@ package com.example.cadastro.cadastro.service
 import com.example.cadastro.cadastro.dto.MovimentoItemView
 import com.example.cadastro.cadastro.dto.MovimentoView
 import com.example.cadastro.cadastro.dto.NovoMovimentoForm
+import com.example.cadastro.cadastro.exception.MovimentoValidationException
 import com.example.cadastro.cadastro.exception.NotFoundException
 import com.example.cadastro.cadastro.mapper.ItemViewMapper
 import jakarta.transaction.Transactional
 import com.example.cadastro.cadastro.mapper.MovimentoFormMapper
 import com.example.cadastro.cadastro.mapper.MovimentoViewMapper
+import com.example.cadastro.cadastro.model.MovimentoTipo
 import com.example.cadastro.cadastro.repository.ExtintoresMovimentoItemRepository
 import org.springframework.cache.annotation.CacheEvict
 import org.springframework.stereotype.Service
@@ -29,7 +31,6 @@ data class ExtintoresMovimentoService(
         return movimentoViewMapper.map(movimento)
     }
 
-
     fun listarMovimentacoes(): List<MovimentoView> {
         return repository.findAll().map { movimentoViewMapper.map(it) }
     }
@@ -46,6 +47,8 @@ data class ExtintoresMovimentoService(
     @Transactional
     @CacheEvict(cacheNames = ["Movimentacoes"], allEntries = true)
     fun cadastrarMovimento(form: NovoMovimentoForm): MovimentoView {
+        validarRegraDeNegocio(tipo = form.tipo, empresaDestinoCodigo = form.empresaDestinoCodigo) // <-- AQUI
+
         val movimento = movimentoFormMapper.map(form)
         val cadastrado = repository.save(movimento)
         return movimentoViewMapper.map(cadastrado)
@@ -54,12 +57,13 @@ data class ExtintoresMovimentoService(
     @Transactional
     @CacheEvict(cacheNames = ["Movimentacoes"], allEntries = true)
     fun atualizarMovimento(id: Int, form: NovoMovimentoForm): MovimentoView {
+        validarRegraDeNegocio(tipo = form.tipo, empresaDestinoCodigo = form.empresaDestinoCodigo) // <-- E AQUI
+
         val movimento = repository.findById(id)
             .orElseThrow { NotFoundException("Movimentação não encontrada") }
 
         val empresaOrigem = empresasService.buscarEmpresas(form.empresaCodigo)
         val empresaDestino = empresasService.buscarEmpresas(form.empresaDestinoCodigo)
-
 
         movimento.empresa = empresaOrigem
         movimento.data = form.data
@@ -75,6 +79,25 @@ data class ExtintoresMovimentoService(
         val movimento = repository.findById(id)
             .orElseThrow { NotFoundException("Movimentação não encontrada") }
         repository.delete(movimento)
+    }
+
+    private fun validarRegraDeNegocio(tipo: MovimentoTipo, empresaDestinoCodigo: String) {
+        when (tipo) {
+            MovimentoTipo.T -> {
+                if (empresaDestinoCodigo.isBlank()) {
+                    throw MovimentoValidationException(
+                        "Movimento do tipo Transferência (T) exige empresa_destino."
+                    )
+                }
+            }
+            MovimentoTipo.F, MovimentoTipo.S -> {
+                if (empresaDestinoCodigo.isNotBlank()) {
+                    throw MovimentoValidationException(
+                        "empresa_destino só é aplicável a movimentos do tipo Transferência (T)."
+                    )
+                }
+            }
+        }
     }
 }
 
