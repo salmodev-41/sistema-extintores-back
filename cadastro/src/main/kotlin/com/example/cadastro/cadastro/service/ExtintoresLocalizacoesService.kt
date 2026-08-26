@@ -12,7 +12,7 @@ import com.example.cadastro.cadastro.repository.EmpresasRepository
 import com.example.cadastro.cadastro.repository.ExtintoresLocalizacoesRepository
 
 @Service
-data class ExtintoresLocalizacoesService(
+class ExtintoresLocalizacoesService(
     private val repository: ExtintoresLocalizacoesRepository,
     private val empresasRepository: EmpresasRepository,
     private val localizacaoFormMapper: LocalizacaoFormMapper,
@@ -62,4 +62,3 @@ data class ExtintoresLocalizacoesService(
         repository.delete(localizacao)
     }
 }
-

@@ -22,7 +22,7 @@ import com.example.cadastro.cadastro.repository.ExtintoresRepository
 import java.time.LocalDate
 
 @Service
-data class MovimentoItemService(
+class MovimentoItemService(
     private val repository: ExtintoresMovimentoItemRepository,
     private val itemFormMapper: ItemFormMapper,
     private val itemViewMapper: ItemViewMapper,
@@ -74,8 +74,12 @@ data class MovimentoItemService(
         val extintorCompleto = extintoresRepository.findById(form.extintorNumero)
             .orElseThrow { IllegalArgumentException("Extintor número ${form.extintorNumero} não encontrado") }
 
-        val destinoCompleto = extintoresLocalizacoesRepository.findById(form.destinoId)
-            .orElseThrow { IllegalArgumentException("Localização de destino com ID ${form.destinoId} não encontrada") }
+        val destinoCompleto = if (form.destinoId > 0) {
+            extintoresLocalizacoesRepository.findById(form.destinoId)
+                .orElseThrow { IllegalArgumentException("Localização de destino com ID ${form.destinoId} não encontrada") }
+        } else {
+            null
+        }
 
         item.movimento = movimentoCompleto
         item.extintor = extintorCompleto
@@ -189,4 +193,3 @@ data class MovimentoItemService(
         }
     }
 }
-

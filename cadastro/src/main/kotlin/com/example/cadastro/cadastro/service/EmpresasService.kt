@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service
 import com.example.cadastro.cadastro.repository.EmpresasRepository
 
 @Service
-data class EmpresasService(
+class EmpresasService(
     private val repository: EmpresasRepository,
     private val empresasFormMapper: EmpresasFormMapper,
     private val empresasViewMapper: EmpresasViewMapper
@@ -58,4 +58,3 @@ data class EmpresasService(
         repository.delete(empresa)
     }
 }
-

@@ -19,7 +19,7 @@ import com.example.cadastro.cadastro.service.ExtintoresService
 
 @RestController
 @RequestMapping("/extintores")
-data class ExtintoresController(
+class ExtintoresController(
     private val service: ExtintoresService
 ) {
 

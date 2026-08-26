@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component
 import com.example.cadastro.cadastro.repository.EmpresasRepository
 
 @Component
-data class LocalizacaoFormMapper(
+class LocalizacaoFormMapper(
     private val empresasRepository: EmpresasRepository
 ) : Mapper<NovaLocalizacaoForm, ExtintoresLocalizacoes> {
 

@@ -19,7 +19,7 @@ import com.example.cadastro.cadastro.service.MovimentoItemService
 
 @RestController
 @RequestMapping("/movimento-itens")
-data class MovimentoItemController(
+class MovimentoItemController(
     private val service: MovimentoItemService
 ) {
 

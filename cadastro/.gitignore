@@ -33,3 +33,15 @@ build/
 .vscode/
 
 application-secrets.properties
+
+# Local configuration and secrets
+application-*.properties
+!application-secrets.properties.example
+!.mvn/
+.env
+.env.*
+
+# Build and runtime files
+logs/
+*.log
+*.tmp

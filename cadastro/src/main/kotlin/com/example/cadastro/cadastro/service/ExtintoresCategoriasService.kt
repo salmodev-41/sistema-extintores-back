@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service
 import com.example.cadastro.cadastro.repository.ExtintoresCategoriasRepository
 
 @Service
-data class ExtintoresCategoriasService(
+class ExtintoresCategoriasService(
     private val repository: ExtintoresCategoriasRepository,
     private val categoriaFormMapper: CategoriaFormMapper,
     private val categoriaViewMapper: CategoriaViewMapper
@@ -57,4 +57,3 @@ data class ExtintoresCategoriasService(
         repository.delete(categoria)
     }
 }
-

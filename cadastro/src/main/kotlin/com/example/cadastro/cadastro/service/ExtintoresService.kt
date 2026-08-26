@@ -13,7 +13,7 @@ import com.example.cadastro.cadastro.repository.ExtintoresLocalizacoesRepository
 import com.example.cadastro.cadastro.repository.ExtintoresRepository
 
 @Service
-data class ExtintoresService(
+class ExtintoresService(
     private val repository: ExtintoresRepository,
     private val categoriasRepository: ExtintoresCategoriasRepository,
     private val localizacoesRepository: ExtintoresLocalizacoesRepository,
@@ -67,7 +67,6 @@ data class ExtintoresService(
         repository.delete(extintor)
     }
 }
-
 
 
 

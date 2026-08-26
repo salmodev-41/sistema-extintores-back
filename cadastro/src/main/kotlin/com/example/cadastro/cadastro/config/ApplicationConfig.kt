@@ -1,5 +1,6 @@
 package com.example.cadastro.cadastro.config
 
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
@@ -13,6 +14,12 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager
 @Configuration
 class ApplicationConfig {
 
+    @Value("\${app.admin.email}")
+    private lateinit var adminEmail: String
+
+    @Value("\${app.admin.password}")
+    private lateinit var adminPassword: String
+
     @Bean
     fun passwordEncoder(): PasswordEncoder {
         return BCryptPasswordEncoder()
@@ -25,8 +32,8 @@ class ApplicationConfig {
 
     @Bean
     fun userDetailsService(): UserDetailsService {
-        val userDetails = User.withUsername("admin@email.com")
-            .password(passwordEncoder().encode("123456"))
+        val userDetails = User.withUsername(adminEmail)
+            .password(passwordEncoder().encode(adminPassword))
             .roles("USER")
             .build()
         return InMemoryUserDetailsManager(userDetails)

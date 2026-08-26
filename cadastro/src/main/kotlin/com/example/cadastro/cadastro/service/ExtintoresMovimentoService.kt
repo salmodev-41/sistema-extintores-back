@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service
 import com.example.cadastro.cadastro.repository.ExtintoresMovimentoRepository
 
 @Service
-data class ExtintoresMovimentoService(
+class ExtintoresMovimentoService(
     private val repository: ExtintoresMovimentoRepository,
     private val movimentoFormMapper: MovimentoFormMapper,
     private val movimentoViewMapper: MovimentoViewMapper,
@@ -100,4 +100,3 @@ data class ExtintoresMovimentoService(
         }
     }
 }
-

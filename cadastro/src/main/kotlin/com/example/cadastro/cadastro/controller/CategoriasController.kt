@@ -19,7 +19,7 @@ import com.example.cadastro.cadastro.service.ExtintoresCategoriasService
 
 @RestController
 @RequestMapping("/categorias")
-data class CategoriasController (
+class CategoriasController (
     private val service : ExtintoresCategoriasService
 ){
 

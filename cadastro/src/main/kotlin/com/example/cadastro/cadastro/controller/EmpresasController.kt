@@ -20,7 +20,7 @@ import com.example.cadastro.cadastro.service.EmpresasService
 
 @RestController
 @RequestMapping("/empresas")
-data class EmpresasController(
+class EmpresasController(
     private val service: EmpresasService
 ) {
 

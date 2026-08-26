@@ -13,7 +13,7 @@ import com.example.cadastro.cadastro.security.JwtAuthenticationFilter
 
 @Configuration
 @EnableWebSecurity
-data class SecurityConfig(
+class SecurityConfig(
     private val jwtAuthFilter: JwtAuthenticationFilter
 ) {
 

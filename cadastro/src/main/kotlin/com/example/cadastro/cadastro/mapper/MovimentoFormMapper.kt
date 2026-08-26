@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component
 import com.example.cadastro.cadastro.service.EmpresasService
 
 @Component
-data class MovimentoFormMapper(
+class MovimentoFormMapper(
 
     private val empresasService: EmpresasService
 ) : Mapper<NovoMovimentoForm, ExtintoresMovimento> {

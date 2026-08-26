@@ -20,7 +20,7 @@ import com.example.cadastro.cadastro.service.ExtintoresMovimentoService
 
 @RestController
 @RequestMapping("/movimentacoes")
-data class MovimentoController(
+class MovimentoController(
     private val service : ExtintoresMovimentoService
 ){
     @GetMapping("/{id}")

@@ -23,8 +23,12 @@ class ItemFormMapper(
         val extintorCompleto = extintoresRepository.findById(t.extintorNumero)
             .orElseThrow { IllegalArgumentException("Extintor número ${t.extintorNumero} não encontrado") }
 
-        val destinoCompleto = extintoresLocalizacoesRepository.findById(t.destinoId)
-            .orElseThrow { IllegalArgumentException("Localização de destino com ID ${t.destinoId} não encontrada") }
+        val destinoCompleto = if (t.destinoId > 0) {
+            extintoresLocalizacoesRepository.findById(t.destinoId)
+                .orElseThrow { IllegalArgumentException("Localização de destino com ID ${t.destinoId} não encontrada") }
+        } else {
+            null
+        }
 
 
         return ExtintoresMovimentoItem(

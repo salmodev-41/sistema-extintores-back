@@ -3,6 +3,7 @@ package com.example.cadastro.cadastro.controller
 import com.example.cadastro.cadastro.security.JWTUtil
 import com.example.cadastro.cadastro.dto.LoginForm
 import com.example.cadastro.cadastro.dto.TokenView
+import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -13,13 +14,13 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/auth")
-data class AuthController(
+class AuthController(
     private val authenticationManager: AuthenticationManager,
     private val jwtUtil: JWTUtil
 ) {
 
     @PostMapping("/login")
-    fun login(@RequestBody form: LoginForm): ResponseEntity<TokenView> {
+    fun login(@RequestBody @Valid form: LoginForm): ResponseEntity<TokenView> {
 
         val loginToken = UsernamePasswordAuthenticationToken(form.email, form.senha)
 
