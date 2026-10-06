@@ -24,7 +24,6 @@ data class NovoExtintor(
     val cargaVencimento: LocalDate,
     @field:NotNull(message = "A data da próxima inspeção é obrigatória")
     val dataProxInspecao: LocalDate,
-    @field:NotBlank(message = "O centro de custo é obrigatório")
     @field:Size(max = 20, message = "O centro de custo deve ter no máximo 20 caracteres")
-    val centroCusto: String
+    val centroCusto: String?
 )

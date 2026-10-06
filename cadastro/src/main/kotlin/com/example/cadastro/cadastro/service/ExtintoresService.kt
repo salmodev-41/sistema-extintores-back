@@ -2,7 +2,10 @@ package com.example.cadastro.cadastro.service
 
 import com.example.cadastro.cadastro.dto.ExtintorView
 import com.example.cadastro.cadastro.dto.NovoExtintor
+import com.example.cadastro.cadastro.exception.LocalizacaoValidationException
 import com.example.cadastro.cadastro.exception.NotFoundException
+import com.example.cadastro.cadastro.model.ExtintoresLocalizacoes
+import com.example.cadastro.cadastro.model.LocalizacaoTipo
 import jakarta.transaction.Transactional
 import com.example.cadastro.cadastro.mapper.ExtintorFormMapper
 import com.example.cadastro.cadastro.mapper.ExtintorViewMapper
@@ -33,7 +36,12 @@ class ExtintoresService(
     @Transactional
     @CacheEvict(cacheNames = ["Extintores"], allEntries = true)
     fun cadastrarExtintor(form: NovoExtintor): ExtintorView {
-        val extintor = extintorFormMapper.map(form)
+        val localizacao = localizacoesRepository.findById(form.localizacaoId)
+            .orElseThrow { NotFoundException("Localização não encontrada") }
+
+        validarRegraDeNegocio(localizacao = localizacao, centroCusto = form.centroCusto)
+
+        val extintor = extintorFormMapper.map(form, localizacao) // <-- faz o overload
         val extintorCadastrado = repository.save(extintor)
         return extintorViewMapper.map(extintorCadastrado)
     }
@@ -47,6 +55,8 @@ class ExtintoresService(
             .orElseThrow { NotFoundException("Categoria não encontrada") }
         val novaLocalizacao = localizacoesRepository.findById(form.localizacaoId)
             .orElseThrow { NotFoundException("Localização não encontrada") }
+
+        validarRegraDeNegocio(localizacao = novaLocalizacao, centroCusto = form.centroCusto)
 
         extintor.situacao = form.situacao
         extintor.tipo = novaCategoria
@@ -66,7 +76,27 @@ class ExtintoresService(
             .orElseThrow { NotFoundException("Extintor não encontrado") }
         repository.delete(extintor)
     }
-}
 
+    private fun validarRegraDeNegocio(localizacao: ExtintoresLocalizacoes, centroCusto: String?) {
+        when (localizacao.tipo) {
+            LocalizacaoTipo.E -> {
+                if (!centroCusto.isNullOrBlank()) {
+                    throw LocalizacaoValidationException(
+                        "Extintor vinculado a localização do tipo Estrutura (E) não pode ter centro de custo (veículo) vinculado."
+                    )
+                }
+            }
+            LocalizacaoTipo.V -> {
+                if (centroCusto.isNullOrBlank()) {
+                    throw LocalizacaoValidationException(
+                        "Extintor vinculado a localização do tipo Veículo/Máquina (V) exige o centro de custo (id do veículo)."
+                    )
+                }
+            }
+            null -> {
+            }
+        }
+    }
+}
 
 

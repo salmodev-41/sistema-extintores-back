@@ -63,7 +63,11 @@ class ExtintoresMovimentoService(
             .orElseThrow { NotFoundException("Movimentação não encontrada") }
 
         val empresaOrigem = empresasService.buscarEmpresas(form.empresaCodigo)
-        val empresaDestino = empresasService.buscarEmpresas(form.empresaDestinoCodigo)
+        val empresaDestino = if (form.tipo == MovimentoTipo.T) {
+            empresasService.buscarEmpresas(form.empresaDestinoCodigo)
+        } else {
+            null
+        }
 
         movimento.empresa = empresaOrigem
         movimento.data = form.data

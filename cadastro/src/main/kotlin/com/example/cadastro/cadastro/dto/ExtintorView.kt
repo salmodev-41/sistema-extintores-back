@@ -13,5 +13,5 @@ data class ExtintorView(
     val dataProxInspecao: LocalDate? = null,
     val localizacao: LocalizacaoView? = null,
     val situacao: ExtintorSituacao? = null,
-    val centroCusto: String = ""
+    val centroCusto: String? = null
 )

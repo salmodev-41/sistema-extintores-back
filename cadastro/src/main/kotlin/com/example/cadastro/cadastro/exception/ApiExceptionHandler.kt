@@ -23,4 +23,8 @@ class ApiExceptionHandler {
             .joinToString("; ") { "${it.field}: ${it.defaultMessage}" }
         return ResponseEntity.badRequest().body(mapOf("message" to message))
     }
+
+    @ExceptionHandler(LocalizacaoValidationException::class)
+    fun handleLocalizacaoValidation(exception: LocalizacaoValidationException): ResponseEntity<Map<String, String>> =
+        ResponseEntity.badRequest().body(mapOf("message" to exception.message.orEmpty()))
 }

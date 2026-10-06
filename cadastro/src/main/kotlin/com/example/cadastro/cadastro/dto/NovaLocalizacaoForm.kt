@@ -16,9 +16,8 @@ data class NovaLocalizacaoForm(
     @field:Size(max = 200, message = "A descrição deve ter no máximo 200 caracteres")
     val descricao: String,
 
-    @field:NotBlank(message = "O centro de custo é obrigatório")
     @field:Size(max = 20, message = "O centro de custo deve ter no máximo 20 caracteres")
-    val centroCusto: String,
+    val centroCusto: String?,
 
     @field:NotNull(message = "O tipo de localização é obrigatório")
     val tipo: LocalizacaoTipo?

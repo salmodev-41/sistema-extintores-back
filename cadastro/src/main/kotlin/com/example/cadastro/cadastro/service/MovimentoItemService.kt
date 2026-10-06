@@ -105,13 +105,6 @@ class MovimentoItemService(
         repository.delete(item)
     }
 
-    /**
-     * Regra de negócio combinada:
-     * - Movimento F: tipo do item é obrigatório (R ou I) e tipo_retorno deve ser coerente.
-     * - Movimento S/T: tipo do item e tipo_retorno não se aplicam (devem ficar null).
-     * - Movimento T: destino do item é obrigatório.
-     * - numero_substituto só é válido quando tipo_retorno indica substituição.
-     */
     private fun validarItem(movimento: ExtintoresMovimento, item: ExtintoresMovimentoItem) {
         when (movimento.tipo) {
             MovimentoTipo.F -> {
@@ -153,10 +146,6 @@ class MovimentoItemService(
         ItemMovimentoTipo.I -> TipoRetorno.I
     }
 
-    /**
-     * Aplica no Extintor os efeitos definidos pela regra de negócio, de acordo com o tipo do movimento.
-     * Entidade gerenciada pelo JPA dentro da transação — dirty checking persiste as mudanças.
-     */
     private fun aplicarEfeitosNoExtintor(movimento: ExtintoresMovimento, item: ExtintoresMovimentoItem) {
         val extintor = item.extintor ?: return
         val categoria = extintor.tipo
@@ -183,7 +172,7 @@ class MovimentoItemService(
                 extintor.localizacao = item.destino
             }
             MovimentoTipo.S -> {
-                // situacao permanece igual, sem alteração
+                // permanece igual, sem alterar
             }
             null -> {}
         }

@@ -37,6 +37,13 @@ application-secrets.properties
 # Local configuration and secrets
 application-*.properties
 !application-secrets.properties.example
+.env
+.env.*
+application-*.yml
+application-*.yaml
+*.pem
+*.p12
+*.pfx
 !.mvn/
 .env
 .env.*

@@ -7,6 +7,6 @@ data class LocalizacaoView(
     val id: Int? = null,
     val empresa: Empresas?,
     val descricao: String,
-    val centroCusto: String,
+    val centroCusto: String?,
     val tipo: LocalizacaoTipo?
 )

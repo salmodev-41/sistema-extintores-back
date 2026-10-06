@@ -27,7 +27,7 @@ data class ExtintoresLocalizacoes(
     var descricao: String = "",
 
     @Column(name = "centro_custo", length = 20)
-    var centroCusto: String = "",
+    var centroCusto: String? = null,
 
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo" , length = 1)

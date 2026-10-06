@@ -40,5 +40,5 @@ data class Extintores(
     var situacao: ExtintorSituacao? = null,
 
     @Column(name = "centro_custo", length = 20)
-    var centroCusto: String = ""
+    var centroCusto: String? = null
 )
